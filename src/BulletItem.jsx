@@ -1,10 +1,32 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import AddBulletItem from "./AddBulletItem"
+import { useDispatch } from "react-redux"
+import { updateBullet } from "./features/bullet/bulletSlice"
 
 
 function BulletItem({ id, content, index, children }) {
 
     const [showChildrenItems, setShowChildrenItems] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const [inputValue, setInputValue] = useState(content)
+
+    const inputRef = useRef(null)
+
+    const dispatch = useDispatch()
+
+    console.log(isEditing)
+
+    function handleUpdate() {
+        setIsEditing(!isEditing)
+
+        dispatch(updateBullet({ id, inputValue }))
+    }
+
+    useEffect(() => {
+        if (isEditing) {
+            inputRef.current.focus()
+        }
+    }, [isEditing])
 
     return (
         <>
@@ -18,7 +40,17 @@ function BulletItem({ id, content, index, children }) {
                 }
 
                 <button className="text-sm rounded-full"><i className=" fa-solid fa-circle hover:text-slate-500"></i></button>
-                <p className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>
+                {isEditing ?
+                    (<input
+                        ref={inputRef}
+                        className="flex-grow border-b bg-slate-900 focus:outline-none focus:border-blue-500"
+                        value={inputValue}
+                        autoFocus
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onBlur={handleUpdate}
+                    />) :
+                    (<p onClick={() => setIsEditing(!isEditing)} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
+
             </div>
 
             {showChildrenItems && (

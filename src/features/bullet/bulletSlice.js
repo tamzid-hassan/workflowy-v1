@@ -93,7 +93,7 @@ export const bulletSlice = createSlice({
 
             state.bullets = bulletItemsWithNewChild;
 
-            localStorage.setItem("BulletItems", JSON.stringify(bulletItemsWithNewChild))
+            localStorage.setItem("BulletItems", JSON.stringify(state.bullets))
 
 
         },
@@ -107,15 +107,36 @@ export const bulletSlice = createSlice({
         },
         updateBullet: (state, action) => {
 
-            //TODO: implement
-            // const { id, text } = action.payload
-            // const todoToUpdate = state.todos.find(todo => todo.id == id)
+            // Getting the PrentItem ID from payload
+            const bulletItemId = action.payload.id
 
-            // if (todoToUpdate) {
-            //     todoToUpdate.text = text
-            // }
 
-            // localStorage.setItem("todos", JSON.stringify(state.todos))
+            // Getting the PrentItem ID from payload
+            const updatedContent = action.payload.inputValue
+
+            // Getting all the Items from state
+            const currentBulletItems = current(state.bullets)
+
+            // Maping through all the items to find the parent and add the UPDATED bulletItem
+            function findItemAndUpdateItemRecursive(itemsList) {
+
+                return itemsList.map(item => {
+
+                    if (item.id === bulletItemId) {
+                        return { ...item, content: updatedContent };
+                    }
+                    if (item.children) {
+                        return { ...item, children: findItemAndUpdateItemRecursive(item.children) };
+                    }
+                    return item
+                })
+            }
+
+            const bulletItemsWithNewChild = findItemAndUpdateItemRecursive(currentBulletItems)
+
+            state.bullets = bulletItemsWithNewChild;
+
+            localStorage.setItem("BulletItems", JSON.stringify(state.bullets))
         }
     }
 })
