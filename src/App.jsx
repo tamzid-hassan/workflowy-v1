@@ -1,4 +1,4 @@
-import BulletItem from "./BulletItem"
+
 import BulletItems from "./BulletItems"
 
 

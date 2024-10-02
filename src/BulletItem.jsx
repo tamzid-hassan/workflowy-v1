@@ -1,4 +1,5 @@
 import { useState } from "react"
+import AddBulletItem from "./AddBulletItem"
 
 
 function BulletItem({ id, content, index, children }) {
@@ -7,7 +8,7 @@ function BulletItem({ id, content, index, children }) {
 
     return (
         <>
-            <div className="flex justify-center gap-x-2">
+            <div className={`flex justify-center gap-x-2 ${children?.length > 0 ? "" : "ml-4"}`}>
                 {children?.length > 0 &&
                     <button
                         onClick={() => setShowChildrenItems(!showChildrenItems)}
@@ -23,8 +24,11 @@ function BulletItem({ id, content, index, children }) {
             {showChildrenItems && (
                 <div className="flex flex-col items-start gap-1 ml-8">
                     {children}
+                    <AddBulletItem parentId={id} />
                 </div>
             )}
+
+
         </>
     )
 }

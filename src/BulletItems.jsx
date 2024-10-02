@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import BulletItem from "./BulletItem"
+import AddBulletItem from "./AddBulletItem"
 
 function BulletItems() {
 
@@ -26,9 +27,13 @@ function BulletItems() {
     }
 
     return (
-        <div className="flex flex-col items-start gap-1">
-            {bulletItems && renderItemsRecursively(bulletItems)}
-        </div>
+        <>
+            <div className="flex flex-col items-start w-full gap-1">
+                {bulletItems && renderItemsRecursively(bulletItems)}
+
+                <AddBulletItem />
+            </div>
+        </>
     )
 }
 

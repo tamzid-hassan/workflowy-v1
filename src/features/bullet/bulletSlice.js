@@ -1,53 +1,99 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, current, nanoid } from "@reduxjs/toolkit"
 
-const initialState = {
+const bulletItemsDemoData = {
     bullets: [
         {
-            id: 1,
+            id: nanoid(),
             content: 'First Bullet',
             children: [
-                { id: 1, content: 'Click to edit this bullet point', children: [] },
+                { id: nanoid(), content: 'Click to edit this bullet point', children: [] },
                 {
-                    id: 2, content: 'Press "+" to add a new bullet point',
+                    id: nanoid(), content: 'Press "+" to add a new bullet point',
                     children: [
-                        { id: 1, content: 'Children of > Press "+" to add a new bullet point', children: [] }
+                        { id: nanoid(), content: 'Children of > Press "+" to add a new bullet point', children: [] }
                     ]
                 },
-                { id: 3, content: 'Drag and drop to reorder', children: [] },
+                { id: nanoid(), content: 'Drag and drop to reorder', children: [] },
             ]
         },
         {
-            id: 2,
+            id: nanoid(),
             content: 'Second Bullet',
             children: [
-                { id: 1, content: 'AAAAAAAAAAAAAAAAAAA 111', children: [] },
-                { id: 2, content: 'BBBBBBBBBBBB 2222', children: [] },
+                { id: nanoid(), content: 'AAAAAAAAAAAAAAAAAAA 111', children: [] },
+                { id: nanoid(), content: 'BBBBBBBBBBBB 2222', children: [] },
 
             ]
         },
         {
-            id: 3,
+            id: nanoid(),
             content: 'Third Bullet',
             children: []
         }
     ]
 }
 
+
+const getLocalBulletItems = JSON.parse(localStorage.getItem("BulletItems"))
+
+
+const initialState = {
+    bullets: getLocalBulletItems ? getLocalBulletItems : bulletItemsDemoData.bullets
+}
+
+
+
+
 export const bulletSlice = createSlice({
     name: "bullet",
     initialState,
-    reducers: [{
+    reducers: {
         addBullet: (state, action) => {
-            //TODO: implement
 
-            // const todo = {
-            //     id: nanoid(), 
-            //     text: action.payload
-            // }
+            // Getting the PrentItem ID from payload
+            const parentId = action.payload
 
-            // state.todos.push(todo)
+            // Getting all the Items from state
+            const currentBulletItems = current(state.bullets)
 
-            // localStorage.setItem("todos", JSON.stringify(state.todos))
+            // TODO: Understand recursive function here in more in depth
+            // Maping through all the items to find the parent and add the new bulletItem
+            function findParentAndAddItemRecursive(itemsList) {
+
+                return itemsList.map(item => {
+
+                    //Seeing if item in the array matches with the given parentID
+                    if (item.id === parentId) {
+
+                        //If matched then send the destructed parentItem with added new child
+                        const parentItem = {
+                            ...item,
+                            children: [...item.children, { id: nanoid(), content: "Type here...", children: [] }]
+                        }
+
+                        // Then return the whole parent item with the new bulletitem child
+                        console.log("🚀 ~ findParentRecursive ~ parentItem:", parentItem)
+
+                        return parentItem
+                    }
+
+                    //If Ids dont match then loop through the children and so on to ultimately find the parent
+                    if (item.children) {
+                        return { ...item, children: findParentAndAddItemRecursive(item.children) }
+                    }
+
+                    return item;
+                })
+            }
+
+            const bulletItemsWithNewChild = findParentAndAddItemRecursive(currentBulletItems)
+
+
+            console.log("🚀 ~ parentItem:", bulletItemsWithNewChild)
+
+            state.bullets = bulletItemsWithNewChild;
+
+            localStorage.setItem("BulletItems", JSON.stringify(bulletItemsWithNewChild))
 
 
         },
@@ -71,7 +117,7 @@ export const bulletSlice = createSlice({
 
             // localStorage.setItem("todos", JSON.stringify(state.todos))
         }
-    }]
+    }
 })
 
 export const { addBullet, removeBullet, updateBullet } = bulletSlice.actions
