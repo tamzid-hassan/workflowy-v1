@@ -30,7 +30,8 @@ const bulletItemsDemoData = {
             content: 'Third Bullet',
             children: []
         }
-    ]
+    ],
+
 }
 
 
@@ -173,10 +174,18 @@ export const bulletSlice = createSlice({
             // Returning result as Payload to SingleView Component
             action.payload = [bulletItemWithAllChildren]
 
-        }
+        },
+        // toggleShowChildrenItems: (state, action) => {
+        //     const toggleValue = action.payload
+        //     state.showChildrenItems = !toggleValue
+        // },
+        // toggleIsEditing: (state, action) => {
+        //     const toggleValue = action.payload
+        //     state.isEditing = !toggleValue
+        // },
     }
 })
 
-export const { addBullet, removeBullet, updateBullet, getBulletItem } = bulletSlice.actions
+export const { addBullet, removeBullet, updateBullet, getBulletItem, toggleShowChildrenItems, toggleIsEditing } = bulletSlice.actions
 
 export default bulletSlice.reducer

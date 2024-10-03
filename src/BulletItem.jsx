@@ -11,6 +11,8 @@ function BulletItem({ id, content, index, children }) {
     const [isEditing, setIsEditing] = useState(false)
     const [inputValue, setInputValue] = useState(content)
 
+
+    // Only for UI purpose
     const inputRef = useRef(null)
     const newBulletRef = useRef(null)
 
@@ -37,10 +39,9 @@ function BulletItem({ id, content, index, children }) {
     }, [isEditing])
 
 
-
     return (
         <>
-            <div className={`flex w-full gap-x-2 ${children?.length > 0 ? "" : "ml-4"}`}>
+            <div className={` flex w-full gap-x-2 ${children?.length > 0 ? "" : "ml-4"}`}>
                 {children?.length > 0 &&
                     <button
                         onClick={() => setShowChildrenItems(!showChildrenItems)}
@@ -49,11 +50,11 @@ function BulletItem({ id, content, index, children }) {
                     </button>
                 }
 
-                <Link to={`../${id}`} className="text-sm rounded-full"><i className=" fa-solid fa-circle hover:text-slate-500"></i></Link>
+                <Link to={`../${id}`} className="rounded-full "><i className="text-xs align-middle fa-solid fa-circle hover:text-slate-500"></i></Link>
                 {isEditing ?
                     (<input
                         ref={inputRef}
-                        className="flex-grow bg-transparent border-b focus:outline-none focus:border-blue-500"
+                        className="bg-transparent border-b focus:outline-none focus:border-blue-500"
                         value={inputValue}
                         autoFocus
                         onChange={(e) => setInputValue(e.target.value)}

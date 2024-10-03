@@ -24,6 +24,10 @@ body {
   font-style: normal;
 }
 
+input {
+  field-sizing: content;
+}
+
 h1,
 h2,
 h3 {

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getBulletItem } from "./features/bullet/bulletSlice";
 import BulletItem from "./BulletItem";
-import AddBulletItem from "./AddBulletItem";
 
 function SingleView() {
 
@@ -13,12 +12,12 @@ function SingleView() {
     const [itemsList, setItemsList] = useState([]);
 
     // Checking if any changes in Total Bullet Items List to make UI change
-    // const localBulletItemsList = useSelector(state => state.bullets)
+    const bulletItemsList = useSelector(state => state.bullets)
 
 
     // Checking parrams of bullet Item Id 
     const { bulletItemId } = useParams()
-    console.log("🚀 ~ bulletItemId ~ Singleview:", bulletItemId)
+    // console.log("🚀 ~ bulletItemId ~ Singleview:", bulletItemId)
 
 
     useEffect(() => {
@@ -30,12 +29,17 @@ function SingleView() {
             // console.log(payload)
 
             setItemsList(payload)
+
+
         }
 
-    }, [])
+    }, [bulletItemsList, bulletItemId])
 
 
-    console.log(itemsList)
+
+
+
+    // console.log(itemsList)
 
 
     // Recursively looping through each bullet items and passing them into <BulletItem/> component
@@ -57,7 +61,7 @@ function SingleView() {
     }
 
     return (
-        <div className="flex flex-col items-start w-full gap-1">
+        <div className="flex flex-col items-start w-full max-w-[85%] gap-1">
 
             {itemsList && renderItemsRecursively(itemsList)}
 

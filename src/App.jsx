@@ -9,7 +9,7 @@ function App() {
 
   return (
     // border border-solid border-white
-    <div className="h-screen w-full max-w-[85%] mx-auto flex flex-col items-center justify-start mt-40 ">
+    <div className="flex flex-col items-center justify-between w-full h-screen mx-auto">
       <Header />
       <Outlet />
       <Footer />

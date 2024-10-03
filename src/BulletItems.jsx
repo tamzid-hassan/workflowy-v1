@@ -6,6 +6,7 @@ import AddBulletItem from "./AddBulletItem"
 function BulletItems() {
 
 
+    //Getting all the Bullet Items from Redux Store
     const bulletItemsList = useSelector(state => state.bullets)
 
 
@@ -29,7 +30,7 @@ function BulletItems() {
 
     return (
         <>
-            <div className="flex flex-col items-start w-full gap-1">
+            <div className="flex flex-col items-start w-full max-w-[85%] gap-1">
 
                 {bulletItemsList && renderItemsRecursively(bulletItemsList)}
 
