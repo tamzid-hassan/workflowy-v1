@@ -142,10 +142,41 @@ export const bulletSlice = createSlice({
             state.bullets = bulletItemsWithNewChild;
 
             localStorage.setItem("BulletItems", JSON.stringify(state.bullets))
+        },
+        getBulletItem: (state, action) => {
+
+            // Getting the Bullet Item ID from payload
+            const bulletItemId = action.payload
+            // console.log("🚀 ~ bulletItemId:", bulletItemId)
+
+            // Getting all the Items from state
+            const currentBulletItems = current(state.bullets)
+
+            // Maping through all the items to find the bullet Item
+            function findItem(items, id) {
+                for (let item of items) {
+                    if (item.id === id) {
+                        return item;
+                    }
+                    if (item.children) {
+                        const found = findItem(item.children, id);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            };
+
+            // Calling the recursive function to go through all child elements as well
+            const bulletItemWithAllChildren = findItem(currentBulletItems, bulletItemId)
+            console.log("🚀 ~ bulletItemWithAllChildren:", bulletItemWithAllChildren)
+
+            // Returning result as Payload to SingleView Component
+            action.payload = [bulletItemWithAllChildren]
+
         }
     }
 })
 
-export const { addBullet, removeBullet, updateBullet } = bulletSlice.actions
+export const { addBullet, removeBullet, updateBullet, getBulletItem } = bulletSlice.actions
 
 export default bulletSlice.reducer

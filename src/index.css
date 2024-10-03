@@ -10,7 +10,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-900 text-neutral-200
+    @apply bg-gradient-to-r from-slate-950 to-slate-800 text-neutral-200
   }
 
   p {

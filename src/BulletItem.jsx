@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import AddBulletItem from "./AddBulletItem"
 import { useDispatch } from "react-redux"
 import { updateBullet } from "./features/bullet/bulletSlice"
+import { Link } from "react-router-dom"
 
 
 function BulletItem({ id, content, index, children }) {
@@ -30,17 +31,10 @@ function BulletItem({ id, content, index, children }) {
         }
     }, [isEditing])
 
-    useEffect(() => {
-        setIsEditing(!isEditing)
-        if (isEditing) {
-            inputRef.current.focus()
-            inputRef.current.select()
-        }
-    }, [newBulletRef])
 
     return (
         <>
-            <div className={`flex justify-center gap-x-2 ${children?.length > 0 ? "" : "ml-4"}`}>
+            <div className={`flex w-full gap-x-2 ${children?.length > 0 ? "" : "ml-4"}`}>
                 {children?.length > 0 &&
                     <button
                         onClick={() => setShowChildrenItems(!showChildrenItems)}
@@ -49,11 +43,11 @@ function BulletItem({ id, content, index, children }) {
                     </button>
                 }
 
-                <button className="text-sm rounded-full"><i className=" fa-solid fa-circle hover:text-slate-500"></i></button>
+                <Link to={`../${id}`} className="text-sm rounded-full"><i className=" fa-solid fa-circle hover:text-slate-500"></i></Link>
                 {isEditing ?
                     (<input
                         ref={inputRef}
-                        className="flex-grow border-b bg-slate-900 focus:outline-none focus:border-blue-500"
+                        className="flex-grow bg-transparent border-b focus:outline-none focus:border-blue-500"
                         value={inputValue}
                         autoFocus
                         onChange={(e) => setInputValue(e.target.value)}

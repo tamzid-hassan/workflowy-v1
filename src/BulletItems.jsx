@@ -2,11 +2,12 @@ import { useSelector } from "react-redux"
 import BulletItem from "./BulletItem"
 import AddBulletItem from "./AddBulletItem"
 
+
 function BulletItems() {
 
-    // Getting the bullet Items from Redux Store
-    const bulletItems = useSelector(state => state.bullets)
-    console.log("🚀 ~ BulletItems ~ bulletItems:", bulletItems)
+
+    const bulletItemsList = useSelector(state => state.bullets)
+
 
     // Recursively looping through each bullet items and passing them into <BulletItem/> component
     function renderItemsRecursively(items) {
@@ -29,7 +30,8 @@ function BulletItems() {
     return (
         <>
             <div className="flex flex-col items-start w-full gap-1">
-                {bulletItems && renderItemsRecursively(bulletItems)}
+
+                {bulletItemsList && renderItemsRecursively(bulletItemsList)}
 
                 <AddBulletItem parentId={"root"} />
             </div>
