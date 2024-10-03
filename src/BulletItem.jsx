@@ -11,6 +11,7 @@ function BulletItem({ id, content, index, children }) {
     const [inputValue, setInputValue] = useState(content)
 
     const inputRef = useRef(null)
+    const newBulletRef = useRef(null)
 
     const dispatch = useDispatch()
 
@@ -25,8 +26,17 @@ function BulletItem({ id, content, index, children }) {
     useEffect(() => {
         if (isEditing) {
             inputRef.current.focus()
+            inputRef.current.select()
         }
     }, [isEditing])
+
+    useEffect(() => {
+        setIsEditing(!isEditing)
+        if (isEditing) {
+            inputRef.current.focus()
+            inputRef.current.select()
+        }
+    }, [newBulletRef])
 
     return (
         <>
@@ -49,7 +59,7 @@ function BulletItem({ id, content, index, children }) {
                         onChange={(e) => setInputValue(e.target.value)}
                         onBlur={handleUpdate}
                     />) :
-                    (<p onClick={() => setIsEditing(!isEditing)} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
+                    (<p ref={newBulletRef} onClick={() => setIsEditing(!isEditing)} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
 
             </div>
 

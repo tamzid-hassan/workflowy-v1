@@ -31,7 +31,7 @@ function BulletItems() {
             <div className="flex flex-col items-start w-full gap-1">
                 {bulletItems && renderItemsRecursively(bulletItems)}
 
-                <AddBulletItem />
+                <AddBulletItem parentId={"root"} />
             </div>
         </>
     )

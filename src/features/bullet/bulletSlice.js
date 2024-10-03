@@ -53,6 +53,11 @@ export const bulletSlice = createSlice({
             // Getting the PrentItem ID from payload
             const parentId = action.payload
 
+            //If parentID is at the root then just append new bullet item at the last of the bullets array
+            if (parentId === "root") {
+                state.bullets.push({ id: nanoid(), content: "Type here...", children: [] })
+            }
+
             // Getting all the Items from state
             const currentBulletItems = current(state.bullets)
 
