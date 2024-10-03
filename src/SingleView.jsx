@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getBulletItem } from "./features/bullet/bulletSlice";
 import BulletItem from "./BulletItem";
+import AddBulletItem from "./AddBulletItem";
 
 function SingleView() {
 
@@ -10,6 +11,9 @@ function SingleView() {
 
     // state for managing filtered bullet Item list
     const [itemsList, setItemsList] = useState([]);
+
+    // Checking if any changes in Total Bullet Items List to make UI change
+    // const localBulletItemsList = useSelector(state => state.bullets)
 
 
     // Checking parrams of bullet Item Id 
@@ -28,7 +32,8 @@ function SingleView() {
             setItemsList(payload)
         }
 
-    }, [bulletItemId, dispatch])
+    }, [])
+
 
     console.log(itemsList)
 

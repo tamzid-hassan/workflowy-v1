@@ -21,6 +21,9 @@ function BulletItem({ id, content, index, children }) {
     function handleUpdate() {
         setIsEditing(!isEditing)
 
+        console.log(id)
+        console.log(inputValue)
+
         dispatch(updateBullet({ id, inputValue }))
     }
 
@@ -29,7 +32,10 @@ function BulletItem({ id, content, index, children }) {
             inputRef.current.focus()
             inputRef.current.select()
         }
+
+
     }, [isEditing])
+
 
 
     return (
