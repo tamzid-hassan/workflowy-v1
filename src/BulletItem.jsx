@@ -31,6 +31,7 @@ function BulletItem({ id, content, index, children, singleViewItemId }) {
     function handleUpdate() {
 
         setIsEditing(!isEditing)
+        setIsHoveringItem(false)
 
         dispatch(updateBullet({ id, inputValue }))
     }
