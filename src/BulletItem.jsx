@@ -100,7 +100,7 @@ function BulletItem({ id, content, index, children, singleViewItemId }) {
                             {content}
                         </p>
                         <div>
-                            {isHoveringItem && <button onClick={handleDelete}><i className="align-middle text-amber-700 fa-regular fa-trash-can"></i></button>}
+                            {isHoveringItem && <button onClick={handleDelete}><i className="align-middle text-neutral-700 fa-regular fa-trash-can hover:text-red-700"></i></button>}
                         </div>
                     </div>)
 
