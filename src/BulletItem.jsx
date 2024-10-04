@@ -7,24 +7,28 @@ import { Link } from "react-router-dom"
 
 function BulletItem({ id, content, index, children }) {
 
-    const [showChildrenItems, setShowChildrenItems] = useState(false)
-    const [isEditing, setIsEditing] = useState(false)
-    const [inputValue, setInputValue] = useState(content)
-
-
     // Only for UI purpose
     const inputRef = useRef(null)
     const newBulletRef = useRef(null)
 
+    const [showChildrenItems, setShowChildrenItems] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const [inputValue, setInputValue] = useState("")
+
+    console.log(content)
+
     const dispatch = useDispatch()
 
-    console.log(isEditing)
+    // console.log(isEditing)
+
+    function toggleEdit() {
+        setIsEditing(!isEditing)
+        setInputValue(newBulletRef.current.innerText)
+    }
 
     function handleUpdate() {
-        setIsEditing(!isEditing)
 
-        console.log(id)
-        console.log(inputValue)
+        setIsEditing(!isEditing)
 
         dispatch(updateBullet({ id, inputValue }))
     }
@@ -60,7 +64,8 @@ function BulletItem({ id, content, index, children }) {
                         onChange={(e) => setInputValue(e.target.value)}
                         onBlur={handleUpdate}
                     />) :
-                    (<p ref={newBulletRef} onClick={() => setIsEditing(!isEditing)} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
+                    // (<p ref={newBulletRef} onClick={() => setIsEditing(!isEditing)} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
+                    (<p ref={newBulletRef} onClick={toggleEdit} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
 
             </div>
 
