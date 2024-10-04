@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getBulletItem } from "./features/bullet/bulletSlice";
 import BulletItem from "./BulletItem";
+import AddBulletItem from "./AddBulletItem";
 
 function SingleView() {
 
@@ -51,6 +52,7 @@ function SingleView() {
                 id={item.id}
                 content={item.content}
                 index={index}
+                singleViewItemId={bulletItemId}
             >
                 {/* If such Item has children then we will call the recursive function with its children items */}
                 {item.children && renderItemsRecursively(item.children)}
@@ -65,7 +67,6 @@ function SingleView() {
 
             {itemsList && renderItemsRecursively(itemsList)}
 
-            {/* <AddBulletItem parentId={"root"} /> */}
         </div>
     )
 }

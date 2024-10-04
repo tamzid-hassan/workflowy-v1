@@ -186,6 +186,6 @@ export const bulletSlice = createSlice({
     }
 })
 
-export const { addBullet, removeBullet, updateBullet, getBulletItem, toggleShowChildrenItems, toggleIsEditing } = bulletSlice.actions
+export const { addBullet, removeBullet, updateBullet, getBulletItem } = bulletSlice.actions
 
 export default bulletSlice.reducer
