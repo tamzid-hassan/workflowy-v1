@@ -8,12 +8,15 @@ const bulletItemsDemoData = {
             children: [
                 { id: nanoid(), content: 'Click to edit this bullet point', children: [] },
                 {
-                    id: nanoid(), content: 'Press "+" to add a new bullet point',
+                    id: nanoid(), content: 'Press the left arrow button to see children',
                     children: [
-                        { id: nanoid(), content: 'Children of > Press "+" to add a new bullet point', children: [] }
+                        { id: nanoid(), content: 'Child 01', children: [] },
+                        { id: nanoid(), content: 'Child 01', children: [] },
+                        { id: nanoid(), content: 'Child 01', children: [] },
+                        { id: nanoid(), content: 'Press the below "+" to keep on adding nested children', children: [] }
                     ]
                 },
-                { id: nanoid(), content: 'Drag and drop to reorder', children: [] },
+                { id: nanoid(), content: 'Press the below "+" to add a new child item', children: [] },
             ]
         },
         {
@@ -105,16 +108,45 @@ export const bulletSlice = createSlice({
         },
         removeBullet: (state, action) => {
 
-            //TODO: implement
+            // Getting the bulletItems ID from payload which will be deleted
+            const bulletItemId = action.payload
+            console.log("🚀 ~ bulletItemId:", bulletItemId)
 
-            // state.todos = state.todos.filter(todo => todo.id != action.payload)
+            // Getting all the Items from state
+            const currentBulletItems = current(state.bullets)
 
-            // localStorage.setItem("todos", JSON.stringify(state.todos))
+
+            // Maping through all the items to find the bullet item to delete
+            function findAndFilterItemRecursive(itemsList) {
+
+                return itemsList.map(item => {
+
+                    // Creating a shallow copy of the current item to avoid modifying the original object
+                    let newItem = { ...item };
+
+                    // If the item has children, recursively call the function to check the children
+                    if (newItem.children && newItem.children.length > 0) {
+                        newItem.children = findAndFilterItemRecursive(newItem.children);
+                    }
+
+                    // Return the new item if its id is not the one we want to delete
+                    return newItem.id === bulletItemId ? null : newItem;
+                }).filter(item => item !== null); // Filtering out the null (deleted) items to avoid null object reference
+            }
+
+            const filteredBulletItems = findAndFilterItemRecursive(currentBulletItems)
+
+            console.log("🚀 ~ filteredBulletItems:", filteredBulletItems)
+
+            state.bullets = filteredBulletItems;
+
+            localStorage.setItem("BulletItems", JSON.stringify(state.bullets))
         },
         updateBullet: (state, action) => {
 
             // Getting the PrentItem ID from payload
             const bulletItemId = action.payload.id
+            console.log("🚀 ~ bulletItemId:", bulletItemId)
 
 
             // Getting the PrentItem ID from payload

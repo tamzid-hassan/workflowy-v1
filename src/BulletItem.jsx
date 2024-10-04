@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import AddBulletItem from "./AddBulletItem"
 import { useDispatch } from "react-redux"
-import { updateBullet } from "./features/bullet/bulletSlice"
+import { removeBullet, updateBullet } from "./features/bullet/bulletSlice"
 import { Link, useParams } from "react-router-dom"
 
 
@@ -15,8 +15,9 @@ function BulletItem({ id, content, index, children, singleViewItemId }) {
     const [showChildrenItems, setShowChildrenItems] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [inputValue, setInputValue] = useState("")
+    const [isHoveringItem, setIsHoveringItem] = useState(false)
 
-    console.log(content)
+    // console.log(content)
 
     const dispatch = useDispatch()
 
@@ -32,6 +33,17 @@ function BulletItem({ id, content, index, children, singleViewItemId }) {
         setIsEditing(!isEditing)
 
         dispatch(updateBullet({ id, inputValue }))
+    }
+
+    // function handleKeyboardEvent(e) {
+    //     if (e.shiftKey && e.key === "Delete") {
+    //         console.log("Deleted")
+    //     }
+
+    // }
+
+    function handleDelete() {
+        dispatch(removeBullet(id))
     }
 
     useEffect(() => {
@@ -75,22 +87,40 @@ function BulletItem({ id, content, index, children, singleViewItemId }) {
                         autoFocus={true}
                         onChange={(e) => setInputValue(e.target.value)}
                         onBlur={handleUpdate}
+                    // onKeyDown={(e) => handleKeyboardEvent(e)}
                     />) :
-                    // (<p ref={newBulletRef} onClick={() => setIsEditing(!isEditing)} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
-                    (<p ref={newBulletRef} onClick={toggleEdit} className={`${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>{content}</p>)}
 
-            </div>
+                    (<div onMouseOver={() => setIsHoveringItem(true)}
+                        onMouseLeave={() => setIsHoveringItem(false)}
+                        className="flex w-full gap-x-5">
+                        <p ref={newBulletRef}
+                            onClick={toggleEdit}
+                            className={` ${children?.length > 0 ? " font-bold text-lg text-white" : "text-md"}`}>
+
+                            {content}
+                        </p>
+                        <div>
+                            {isHoveringItem && <button onClick={handleDelete}><i className="align-middle text-amber-700 fa-regular fa-trash-can"></i></button>}
+                        </div>
+                    </div>)
+
+                }
+
+            </div >
 
             {/* If only showChildrenItems true and really has children Bullet Items then render this */}
-            {showChildrenItems && children.length !== 0 && (
-                <div className="flex flex-col items-start gap-1 ml-8">
-                    {children}
-                    <AddBulletItem parentId={id} />
-                </div>
-            )}
+            {
+                showChildrenItems && children.length !== 0 && (
+                    <div className="flex flex-col items-start gap-1 ml-8">
+                        {children}
+                        <AddBulletItem parentId={id} />
+                    </div>
+                )
+            }
 
             {/* If only children Bullet Items are present and current SingleItemview is for current Bullet Item
              then render this and give button to add children */}
+
             {id === singleViewItemId && children.length === 0 && (
                 <div className="ml-8">
                     <AddBulletItem parentId={id} />
